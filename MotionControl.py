@@ -211,7 +211,7 @@ def main():
           if (xDiff >= 0.4 or yDiff >= 0.4) and HandCounter >= 60 and CursorControl == True:
             xCoordarray.insert(0,xCoordmiddle)
             yCoordarray.insert(0,yCoordmiddle)
-            if len(xCoordarray) >= int(DistanceFromScreen/2):
+            if len(xCoordarray) >= int(DistanceFromScreen/1.5):
               xCoordarray = xCoordarray[0:int(DistanceFromScreen/1.5)]
               yCoordarray = yCoordarray[0:int(DistanceFromScreen/1.5)]
             xTotal = 0
@@ -229,51 +229,40 @@ def main():
             #SET CURSOR POSITIONS
             win32api.SetCursorPos((int(xCoord),int(yCoord)))
  
-          #ARCTANGENT OF MIDDLE FINGER HEIGHT TO WRIST
+          #ARCTANGENT OF MIDDLE FINGER HEIGHT TO WRIST CENTER
           RotationAngle = math.degrees(numpy.arctan((yRealimagemiddle-yRealimagewrist)/(xRealimagemiddle-xRealimagewrist)))+90
           
           #IF HAND IS IN FRAME LONG ENOUGH, ACTIVATE CURSOR CONTROLS
           if HandCounter >= 60:
             # if len(results.multi_handedness) == 1:
-              # ###MAGIC FINGER###
-              # xlinearray.insert(0,int(imageX*image_width))
-              # ylinearray.insert(0,int(imageY*image_height))
-              # Rarray.insert(0, random.randint(0,50))
-              # Garray.insert(0, random.randint(0,50))
-              # Barray.insert(0, random.randint(0,50))
-              # #ONCE TRACING LINE GETS TOO LONG, POP OFF OLDEST ELEMENT OF ARRAY TO SHORTEN THE CHAIN
-              # if len(xlinearray) >= 15:
-              #     xlinearray.pop(14)
-              #     ylinearray.pop(14)
-              #     Rarray.pop(14)
-              #     Garray.pop(14)
-              #     Barray.pop(14)
-              #     #DRAW LINE BY LOOPING THROUGH ARRAY, NEWEST TO OLDEST, SO THAT IT MAKES A TIMELINE FROM CURRENT TO PAST
-              #     for i in range(1,len(xlinearray)):               
-              #       #ARRAY HANDLER
-              #       if xlinearray[i] < 1:
-              #         xlinearray[i] = 1
-              #       if ylinearray[i] < 1:
-              #         ylinearray[i] = 1
-              #       #IF FINGER MOVES ENOUGH, GENERATE A TRACING LINE
-              #       xPointDiff = abs((xlinearray[i] - xlinearray[i-1])/xlinearray[i])*100; yPointDiff = abs((ylinearray[i] - ylinearray[i-1])/ylinearray[i])*100
-              #       if xPointDiff > 0.5 or yPointDiff > 0.5:
-              #         cv2.line(image,(xlinearray[i-1],ylinearray[i-1]),(xlinearray[i],ylinearray[i]),(Rarray[i],Garray[i],Barray[i]),6)
-            #DRAW MAIN ELLIPSE  
-            # cv2.ellipse(image,(int(xAnimation),int(yAnimation)),(int(HandWidth*1.55),int(HandHeight*0.2)),RotationAngle,ActiveHandCount*4,ActiveHandCount*4+25,(255,255,255),3)
-            # cv2.ellipse(image,(int(xAnimation),int(yAnimation)),(int(HandWidth*1.55),int(HandHeight*0.2)),RotationAngle+45,ActiveHandCount*5,ActiveHandCount*5+25,(255,255,255),3)
-            # cv2.ellipse(image,(int(xAnimation),int(yAnimation)),(int(HandWidth*1.55),int(HandHeight*0.2)),RotationAngle+90,ActiveHandCount*6,ActiveHandCount*6+25,(255,255,255),3)    
-            # cv2.ellipse(image,(int(xAnimation),int(yAnimation)),(int(HandWidth*1.55),int(HandHeight*0.2)),RotationAngle+135,ActiveHandCount*4,ActiveHandCount*4+25,(255,255,255),3)
-            # cv2.ellipse(image,(int(xAnimation),int(yAnimation)),(int(HandWidth*1.55),int(HandHeight*0.2)),RotationAngle+180,ActiveHandCount*5,ActiveHandCount*5+25,(255,255,255),3)
-            # cv2.ellipse(image,(int(xAnimation),int(yAnimation)),(int(HandWidth*1.55),int(HandHeight*0.2)),RotationAngle+225,ActiveHandCount*6,ActiveHandCount*6+25,(255,255,255),3)    
+            ###MAGIC FINGER###
+            if CursorControl == True:
+              xlinearray.insert(0,int(image_width-xCoord/ScreenWidth*image_width))
+              ylinearray.insert(0,int(yCoord/ScreenHeight*image_height))
+              Rarray.insert(0, random.randint(0,50))
+              Garray.insert(0, random.randint(0,50))
+              Barray.insert(0, random.randint(0,50))
+              if len(xlinearray) > int(DistanceFromScreen/1.5):
+                xlinearray = xlinearray[0:int(DistanceFromScreen/1.5)]
+                ylinearray = ylinearray[0:int(DistanceFromScreen/1.5)]
+              #DRAW LINE BY LOOPING THROUGH ARRAY, NEWEST TO OLDEST, SO THAT IT MAKES A TIMELINE FROM CURRENT TO PAST
+              for i in range(1,len(xlinearray)):               
+                #ARRAY HANDLER
+                if xlinearray[i] < 1:
+                  xlinearray[i] = 1
+                if ylinearray[i] < 1:
+                  ylinearray[i] = 1
+                #GENERATE A TRACING LINE
+                cv2.line(image,(xlinearray[i-1],ylinearray[i-1]),(xlinearray[i],ylinearray[i]),(Rarray[i],Garray[i],Barray[i]),3)
  
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,270+ActiveHandCount*3,270+ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen)+1)
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,180+ActiveHandCount*3,180+ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen)+1)
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,90+ActiveHandCount*3,90+ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen)+1)
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,ActiveHandCount*3,ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen)+1)
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth),int(HandHeight)),RotationAngle,0,360,(0, 127, 255),int(60/DistanceFromScreen))
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*1.1),int(HandHeight*1.1)),RotationAngle,90+abs(int(ActiveHandCount*4)),90+abs(int(ActiveHandCount*4))+120,(242, 255, 255),int(60/DistanceFromScreen))
-            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*1.2),int(HandHeight*1.2)),RotationAngle,-abs(int(ActiveHandCount*6)),-abs(int(ActiveHandCount*6))+120,(0, 127, 255),int(60/DistanceFromScreen))
+            #DRAW MAIN ELLIPSE  
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,270+ActiveHandCount*3,270+ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen/2)+1)
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,180+ActiveHandCount*3,180+ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen/2)+1)
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,90+ActiveHandCount*3,90+ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen/2)+1)
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*0.8),int(HandHeight*0.8)),RotationAngle,ActiveHandCount*3,ActiveHandCount*3+45,(255, 255, 255),int(60/DistanceFromScreen/2)+1)
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth),int(HandHeight)),RotationAngle,0,360,(0, 127, 255),int(60/DistanceFromScreen/2))
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*1.1),int(HandHeight*1.1)),RotationAngle,90+abs(int(ActiveHandCount*4)),90+abs(int(ActiveHandCount*4))+120,(242, 255, 255),int(60/DistanceFromScreen/2))
+            cv2.ellipse(image,(xAnimation,yAnimation),(int(HandWidth*1.2),int(HandHeight*1.2)),RotationAngle,-abs(int(ActiveHandCount*6)),-abs(int(ActiveHandCount*6))+120,(0, 127, 255),int(60/DistanceFromScreen/2))
  
             if CursorControl == True:
               if xCoordpinky == 0:
@@ -300,7 +289,7 @@ def main():
               #   time.sleep(1)
  
               #OPEN TASK VIEW
-              if abs((xCoordpinky-xCoordthumb)) < 150/DistanceFromScreen and abs((yCoordpinky-yCoordthumb)) < 150/DistanceFromScreen:
+              if abs((xCoordpinky-xCoordthumb)) < 150/DistanceFromScreen and abs((yCoordpinky-yCoordthumb)) < 150/DistanceFromScreen and abs((xCoordpinkyknuckle-xCoordindexknuckle)) > 150/DistanceFromScreen:
                 keyboard.send('windows+tab')
                 time.sleep(0.8)
               
@@ -309,7 +298,7 @@ def main():
                 win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN,xCoordmiddle,yCoordmiddle,0,0)
                 win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP,xCoordmiddle,yCoordmiddle,0,0)
                 time.sleep(0.25)
- 
+                
               #SCROLL UP (RIGHT HAND)
               if (xCoordthumb > xCoordindexknuckle and yCoordpinky < yCoordwrist and yCoordindex < yCoordwrist and LeftHand == False and yCoordmiddle < yCoordmiddleknuckle and xCoordthumb < xCoordpinky and PINKYDOWN == False):
                 UpCount += 1
@@ -417,16 +406,15 @@ def main():
       #   image = cv2.flip(image,1)
  
       if HandShown == False:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY )
-        cv2.imshow('MK Motion Control', cv2.flip(cv2.resize(image,(int(round(ScreenWidth/ImageSizeMod)),int(round(ScreenHeight/ImageSizeMod)))), 1))
-        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-        
-        # k = cv2.waitKeyEx(100)
-        # print(str(k))
         if cv2.waitKeyEx(5) == 2490368 and ImageSizeMod > 1:
           ImageSizeMod -= 1
         elif cv2.waitKeyEx(5) == 2621440 and ImageSizeMod < 7:
           ImageSizeMod += 1
+ 
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY )
+        cv2.imshow('MK Motion Control', cv2.flip(cv2.resize(image,(int(round(ScreenWidth/ImageSizeMod)),int(round(ScreenHeight/ImageSizeMod)))), 1))
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+        
       else:
         cv2.imshow('MK Motion Control', cv2.flip(cv2.resize(image,(int(round(ScreenWidth/ImageSizeMod)),int(round(ScreenHeight/ImageSizeMod)))), 1))
       
@@ -440,4 +428,3 @@ def main():
  
 if __name__ == '__main__':
   main()
-
