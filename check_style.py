@@ -61,12 +61,12 @@ def run(command: str) -> None:
 
 
 log("Running formatter...")
-subprocess.run(FORMATTER_COMMAND, stdout=subprocess.PIPE, check=True)
+run(FORMATTER_COMMAND)
 
 log("Running linter...")
-subprocess.run(LINTER_COMMAND, check=True)
+run(LINTER_COMMAND)
 
 log("Running import sorter...")
-subprocess.run(SORTER_COMMAND, check=True)
+run(SORTER_COMMAND)
 
 log(f"Finished executing {filename}, no errors raised.")
