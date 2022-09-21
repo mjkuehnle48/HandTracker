@@ -1,0 +1,5 @@
+opencv-python==4.6.0.66
+mediapipe==0.8.11
+keyboard==0.13.5
+mouse==0.7.1
+pywin

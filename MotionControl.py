@@ -1,13 +1,8 @@
-import win32gui
 import cv2
 import mediapipe as mp
-import numpy
 import win32api, win32con
 import ctypes
 import time
-from mediapipe.python.solutions import hands_connections
-from mediapipe.python.solutions.drawing_utils import DrawingSpec
-from mediapipe.python.solutions.hands import HandLandmark
 import random
 import math
 import numpy
