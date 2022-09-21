@@ -1,0 +1,4 @@
+mediapipe~=0.8.11
+mouse~=0.7.1
+keyboard~=0.13.5
+pywin32~=304
