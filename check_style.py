@@ -8,7 +8,7 @@ extension from the `.git/hooks/pre-commit.sample` file and replace the
 content with:
 
 ```shell
-#!/bin/sh
+#!C:/Progra~1/Git/usr/bin/sh.exe
 echo "[pre-commit] Running pre-commit hook..."
 python check_style.py
 if [ $? -ne 0 ]; then
@@ -18,9 +18,9 @@ fi
 echo "[pre-commit] OK"
 exit 0
 ```
-If you're on Windows, replace the shebang (line 1) with:
+If you're not on Windows, replace the shebang (line 1) with:
 ```
-#!C:/Progra~1/Git/usr/bin/sh.exe
+#!/bin/sh
 ```
 """
 
