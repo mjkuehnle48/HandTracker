@@ -44,5 +44,3 @@ Or invoke it from a pre-commit hook - instructions in the docstring. Bypassing t
 ```console
 git commit -m "Your commit message" --no-verify
 ```
-
-<!-- Note from Vincent: I'm a coder that's pretty new to open source, so do let me know if the changes I made can be improved. I always try to strive for "best practices". -->
